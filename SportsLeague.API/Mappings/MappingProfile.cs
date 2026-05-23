@@ -30,7 +30,7 @@ namespace SportsLeague.API.Mappings
                 .ForMember(
                     dest => dest.TeamsCount,
                     opt => opt.MapFrom(src =>
-                        src.TournamentTeams != null ? src.TournamentTeams.Count : 0)); //Condición ternaria
+                        src.TournamentTeams != null ? src.TournamentTeams.Count : 0));
 
             // Match mappings
             CreateMap<MatchRequestDTO, Match>();
@@ -62,6 +62,17 @@ namespace SportsLeague.API.Mappings
                 .ForMember(dest => dest.PlayerName,
                     opt => opt.MapFrom(src =>
                         src.Player.FirstName + " " + src.Player.LastName));
+
+            // MatchLineup mappings
+            CreateMap<CreateMatchLineupDto, MatchLineup>();
+            CreateMap<MatchLineup, MatchLineupDto>()
+                .ForMember(dest => dest.PlayerName,
+                    opt => opt.MapFrom(src =>
+                        src.Player.FirstName + " " + src.Player.LastName))
+                .ForMember(dest => dest.TeamName,
+                    opt => opt.MapFrom(src =>
+                        src.Player.Team != null ? src.Player.Team.Name : "N/A"));
         }
     }
 }
+
